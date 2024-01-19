@@ -236,7 +236,7 @@ install_XrayR() {
 
     # 写入配置文件
     echo "正在尝试写入配置文件..."
-    wget https://raw.githubusercontent.com/chuwanfeng/XrayR-release/config/config.yml -O /etc/XrayR/config.yml
+    wget https://raw.githubusercontent.com/chuwanfeng/XrayR-release/master/config/config.yml -O /etc/XrayR/config.yml
     sed -i "s/PanelType:.*/PanelType: \"${panel_type}\"/g" /etc/XrayR/config.yml
     sed -i "s/ApiHost:.*/ApiHost: \"${api_host}\"/g" /etc/XrayR/config.yml
     sed -i "s/ApiKey:.*/ApiKey: \"${api_key}\"/g" /etc/XrayR/config.yml
