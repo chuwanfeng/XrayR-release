@@ -97,7 +97,19 @@ check_status() {
 }
 
 install_acme() {
-    curl https://get.acme.sh | sh
+    #apt -y install nginx python3-certbot-nginx
+
+    # 设置面板类型
+    read -p "请输入节点服务器的域名:" node_domain
+    [ -z "${node_domain}" ]
+    # 如果不输入默认为NewV2board
+    if [ ! $node_domain ]; then
+      node_domain="www.heima002.com"
+    fi
+    echo -e "${yellow}您设定的节点域名为${plain} ${node_domain}"
+
+    #certbot certonly -d $node_domain --manual --preferred-challenges dns
+    #certbot certonly --standalone -d vip.chuwanfeng.top
 }
 
 install_XrayR() {
@@ -106,16 +118,16 @@ install_XrayR() {
     fi
 
     mkdir /usr/local/XrayR/ -p
-	cd /usr/local/XrayR/
+	  cd /usr/local/XrayR/
 
     if  [ $# == 0 ] ;then
-        last_version=$(curl -Ls "https://api.github.com/repos/XrayR-project/XrayR/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+        last_version=$(curl -Ls "https://api.github.com/repos/chuwanfeng/XrayR/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
         if [[ ! -n "$last_version" ]]; then
             echo -e "${red}检测 XrayR 版本失败，可能是超出 Github API 限制，请稍后再试，或手动指定 XrayR 版本安装${plain}"
             exit 1
         fi
         echo -e "检测到 XrayR 最新版本：${last_version}，开始安装"
-        wget -q -N --no-check-certificate -O /usr/local/XrayR/XrayR-linux.zip https://github.com/XrayR-project/XrayR/releases/download/${last_version}/XrayR-linux-${arch}.zip
+        wget -q -N --no-check-certificate -O /usr/local/XrayR/XrayR-linux.zip https://github.com/chuwanfeng/XrayR/releases/download/${last_version}/XrayR-linux-${arch}.zip
         if [[ $? -ne 0 ]]; then
             echo -e "${red}下载 XrayR 失败，请确保你的服务器能够下载 Github 的文件${plain}"
             exit 1
@@ -126,7 +138,7 @@ install_XrayR() {
 	else
 	    last_version="v"$1
 	fi
-        url="https://github.com/XrayR-project/XrayR/releases/download/${last_version}/XrayR-linux-${arch}.zip"
+        url="https://github.com/chuwanfeng/XrayR/releases/download/${last_version}/XrayR-linux-${arch}.zip"
         echo -e "开始安装 XrayR ${last_version}"
         wget -q -N --no-check-certificate -O /usr/local/XrayR/XrayR-linux.zip ${url}
         if [[ $? -ne 0 ]]; then
@@ -140,7 +152,7 @@ install_XrayR() {
     chmod +x XrayR
     mkdir /etc/XrayR/ -p
     rm /etc/systemd/system/XrayR.service -f
-    file="https://github.com/XrayR-project/XrayR-release/raw/master/XrayR.service"
+    file="https://github.com/chuwanfeng/XrayR-release/raw/master/XrayR.service"
     wget -q -N --no-check-certificate -O /etc/systemd/system/XrayR.service ${file}
     #cp -f XrayR.service /etc/systemd/system/
     systemctl daemon-reload
@@ -153,7 +165,7 @@ install_XrayR() {
     if [[ ! -f /etc/XrayR/config.yml ]]; then
         cp config.yml /etc/XrayR/
         echo -e ""
-        echo -e "全新安装，请先参看教程：https://github.com/XrayR-project/XrayR，配置必要的内容"
+        echo -e "全新安装，请先参看教程：https://github.com/chuwanfeng/XrayR，配置必要的内容"
     else
         systemctl start XrayR
         sleep 2
@@ -162,7 +174,7 @@ install_XrayR() {
         if [[ $? == 0 ]]; then
             echo -e "${green}XrayR 重启成功${plain}"
         else
-            echo -e "${red}XrayR 可能启动失败，请稍后使用 XrayR log 查看日志信息，若无法启动，则可能更改了配置格式，请前往 wiki 查看：https://github.com/XrayR-project/XrayR/wiki${plain}"
+            echo -e "${red}XrayR 可能启动失败，请稍后使用 XrayR log 查看日志信息，若无法启动，则可能更改了配置格式，请前往 wiki 查看：https://github.com/chuwanfeng/XrayR/wiki${plain}"
         fi
     fi
 
@@ -175,16 +187,85 @@ install_XrayR() {
     if [[ ! -f /etc/XrayR/custom_outbound.json ]]; then
         cp custom_outbound.json /etc/XrayR/
     fi
-    if [[ ! -f /etc/XrayR/custom_inbound.json ]]; then
-        cp custom_inbound.json /etc/XrayR/
+    if [[ ! -f /etc/XrayN/rulelist ]]; then
+        cp rulelist /etc/XrayN/
     fi
-    if [[ ! -f /etc/XrayR/rulelist ]]; then
-        cp rulelist /etc/XrayR/
+
+     # 设置面板类型
+    read -p "请输入面板类型(SSpanel, NewV2board, PMpanel, Proxypanel, V2RaySocks, GoV2Panel):" panel_type
+    [ -z "${panel_type}" ]
+    # 如果不输入默认为NewV2board
+    if [ ! $panel_type ]; then
+      panel_type="NewV2board"
     fi
-    curl -o /usr/bin/XrayR -Ls https://raw.githubusercontent.com/XrayR-project/XrayR-release/master/XrayR.sh
+    echo -e "${yellow}您设定的面板类型为${plain} ${panel_type}"
+
+    # 设置面板URL地址
+    read -p "请输入面板URL地址:" api_host
+    [ -z "${api_host}" ]
+    echo -e "${yellow}您设定的面板URL为${plain} ${api_host}"
+
+    # 设置面板key
+    read -p "请输入面板Key:" api_key
+    [ -z "${api_key}" ]
+    echo -e "${yellow}您设定的面板key为${plain} ${api_key}"
+
+     # 设置节点序号
+    read -p "请输入面板中的节点序号:" node_id
+    [ -z "${node_id}" ]
+    echo -e "${green}您设定的节点序号为${plain} ${node_id}"
+
+    # 选择协议
+    read -p "请输入你使用的协议(V2ray, Shadowsocks, Trojan, Shadowsocks-Plugin):" node_type
+    [ -z "${node_type}" ]
+    # 如果不输入默认为V2ray
+    if [ ! $node_type ]; then
+    node_type="Trojan"
+    fi
+    echo -e "${yellow}您选择的协议为${plain} ${node_type}"
+
+    # 输入域名（TLS）
+    read -p "请输入你的域名(node.v2board.com)如没开启TLS请直接回车:" node_domain
+    [ -z "${node_domain}" ]
+    # 如果不输入默认为node1.v2board.com
+    if [ ! $node_domain ]; then
+    node_domain="node.v2board.com"
+    fi
+    echo -e "${yellow}您的域名(TLS)${plain} ${node_domain}"
+
+
+    # 写入配置文件
+    echo "正在尝试写入配置文件..."
+    wget https://raw.githubusercontent.com/chuwanfeng/XrayN-SS/main/config.yml -O /etc/XrayN/config.yml
+    sed -i "s/PanelType:.*/PanelType: \"${panel_type}\"/g" /etc/XrayN/config.yml
+    sed -i "s/ApiHost:.*/ApiHost: \"${api_host}\"/g" /etc/XrayN/config.yml
+    sed -i "s/ApiKey:.*/ApiKey: \"${api_key}\"/g" /etc/XrayN/config.yml
+
+    sed -i "s/NodeID:.*/NodeID: ${node_id}/g" /etc/XrayN/config.yml
+    sed -i "s/NodeType:.*/NodeType: ${node_type}/g" /etc/XrayN/config.yml
+    sed -i "s/CertDomain:.*/CertDomain: \"${node_domain}\"/g" /etc/XrayN/config.yml
+    echo ""
+    echo "写入完成，正在尝试重启XrayN服务..."
+    echo
+
+
+    curl -o /usr/bin/XrayR -Ls https://raw.githubusercontent.com/chuwanfeng/XrayR-release/master/XrayR.sh
     chmod +x /usr/bin/XrayR
     ln -s /usr/bin/XrayR /usr/bin/xrayr # 小写兼容
     chmod +x /usr/bin/xrayr
+
+    systemctl daemon-reload
+    XrayN restart
+    echo "正在配置防火墙！放行443、1443端口"
+    echo
+    ufw allow 1443/tcp
+    ufw allow 443/tcp
+    ufw status
+    #systemctl disable firewalld
+    #systemctl stop firewalld
+    echo "XrayN服务已经完成重启，请愉快地享用！"
+    echo
+
     cd $cur_dir
     rm -f install.sh
     echo -e ""
@@ -209,5 +290,5 @@ install_XrayR() {
 
 echo -e "${green}开始安装${plain}"
 install_base
-# install_acme
+install_cerboat
 install_XrayR $1
