@@ -187,8 +187,8 @@ install_XrayR() {
     if [[ ! -f /etc/XrayR/custom_outbound.json ]]; then
         cp custom_outbound.json /etc/XrayR/
     fi
-    if [[ ! -f /etc/XrayN/rulelist ]]; then
-        cp rulelist /etc/XrayN/
+    if [[ ! -f /etc/XrayR/rulelist ]]; then
+        cp rulelist /etc/XrayR/
     fi
 
      # 设置面板类型
@@ -236,16 +236,16 @@ install_XrayR() {
 
     # 写入配置文件
     echo "正在尝试写入配置文件..."
-    wget https://raw.githubusercontent.com/chuwanfeng/XrayN-SS/main/config.yml -O /etc/XrayN/config.yml
-    sed -i "s/PanelType:.*/PanelType: \"${panel_type}\"/g" /etc/XrayN/config.yml
-    sed -i "s/ApiHost:.*/ApiHost: \"${api_host}\"/g" /etc/XrayN/config.yml
-    sed -i "s/ApiKey:.*/ApiKey: \"${api_key}\"/g" /etc/XrayN/config.yml
+    wget https://raw.githubusercontent.com/chuwanfeng/XrayR-release/config/config.yml -O /etc/XrayR/config.yml
+    sed -i "s/PanelType:.*/PanelType: \"${panel_type}\"/g" /etc/XrayR/config.yml
+    sed -i "s/ApiHost:.*/ApiHost: \"${api_host}\"/g" /etc/XrayR/config.yml
+    sed -i "s/ApiKey:.*/ApiKey: \"${api_key}\"/g" /etc/XrayR/config.yml
 
-    sed -i "s/NodeID:.*/NodeID: ${node_id}/g" /etc/XrayN/config.yml
-    sed -i "s/NodeType:.*/NodeType: ${node_type}/g" /etc/XrayN/config.yml
-    sed -i "s/CertDomain:.*/CertDomain: \"${node_domain}\"/g" /etc/XrayN/config.yml
+    sed -i "s/NodeID:.*/NodeID: ${node_id}/g" /etc/XrayR/config.yml
+    sed -i "s/NodeType:.*/NodeType: ${node_type}/g" /etc/XrayR/config.yml
+    sed -i "s/CertDomain:.*/CertDomain: \"${node_domain}\"/g" /etc/XrayR/config.yml
     echo ""
-    echo "写入完成，正在尝试重启XrayN服务..."
+    echo "写入完成，正在尝试重启XrayR服务..."
     echo
 
 
@@ -255,7 +255,7 @@ install_XrayR() {
     chmod +x /usr/bin/xrayr
 
     systemctl daemon-reload
-    XrayN restart
+    XrayR restart
     echo "正在配置防火墙！放行443、1443端口"
     echo
     ufw allow 1443/tcp
@@ -263,7 +263,7 @@ install_XrayR() {
     ufw status
     #systemctl disable firewalld
     #systemctl stop firewalld
-    echo "XrayN服务已经完成重启，请愉快地享用！"
+    echo "XrayR服务已经完成重启，请愉快地享用！"
     echo
 
     cd $cur_dir
