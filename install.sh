@@ -251,7 +251,7 @@ install_XrayR() {
 
     curl -o /usr/bin/XrayR -Ls https://raw.githubusercontent.com/chuwanfeng/XrayR-release/master/XrayR.sh
     chmod +x /usr/bin/XrayR
-    ln -s /usr/bin/XrayR /usr/bin/xrayr # 小写兼容
+    #ln -s /usr/bin/XrayR /usr/bin/xrayr # 小写兼容
     chmod +x /usr/bin/xrayr
 
     systemctl daemon-reload
