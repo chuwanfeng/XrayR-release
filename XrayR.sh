@@ -400,13 +400,14 @@ show_menu() {
   ${green}7.${plain} 查看 XrayR 状态
   ${green}8.${plain} 查看 XrayR 日志
 ————————————————
-  ${green}9.${plain} 设置 XrayR 开机自启
- ${green}10.${plain} 取消 XrayR 开机自启
+  ${green}9.${plain}  设置 XrayR 开机自启
+  ${green}10.${plain} 取消 XrayR 开机自启
 ————————————————
- ${green}11.${plain} 一键安装 bbr (最新内核)
- ${green}12.${plain} 查看 XrayR 版本 
- ${green}13.${plain} 升级维护脚本
- "
+  ${green}11.${plain} 一键安装 bbr (最新内核)
+  ${green}12.${plain} 查看 XrayR 版本
+  ${green}13.${plain} 升级维护脚本
+  ${green}14.${plain} 退出脚本
+  "
  #后续更新可加入上方字符串中
     show_status
     echo && read -p "请输入选择 [0-13]: " num
@@ -439,6 +440,8 @@ show_menu() {
         12) check_install && show_XrayR_version
         ;;
         13) update_shell
+        ;;
+        14) exit 0
         ;;
         *) echo -e "${red}请输入正确的数字 [0-12]${plain}"
         ;;
