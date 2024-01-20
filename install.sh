@@ -111,7 +111,7 @@ install_XrayR() {
     fi
     echo -e "${yellow}您设定的节点域名为${plain} ${node_domain}"
 
-    echo -e "$[green]签发ssl证书"
+    echo -e "${green}签发ssl证书"
     sudo certbot certonly --standalone -d $node_domain
 
     #/etc/letsencrypt/live/www.baidu.com/fullchain.pem
