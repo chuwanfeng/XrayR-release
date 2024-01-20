@@ -114,11 +114,6 @@ install_XrayR() {
     echo -e "${green}签发ssl证书"
     certbot certonly --standalone -d $node_domain
 
-    #/etc/letsencrypt/live/www.baidu.com/fullchain.pem
-    #/etc/letsencrypt/live/www.baidu.com/privkey.pem
-    certfile = "/etc/letsencrypt/live/${node_domain}/fullchain.pem"
-    keyfile = "/etc/letsencrypt/live/${node_domain}/privkey.pem"
-
     # 添加定时任务
     echo -e "${green}添加自动续签证书"
     echo "0 4 1 */1 * certbot-auto renew --force-renew >/root/crontab.log 2>&1" >> /etc/crontab.ssl
@@ -255,8 +250,14 @@ install_XrayR() {
     sed -i "s/NodeID:.*/NodeID: ${node_id}/g" /etc/XrayR/config.yml
     sed -i "s/NodeType:.*/NodeType: ${node_type}/g" /etc/XrayR/config.yml
     sed -i "s/CertDomain:.*/CertDomain: \"${node_domain}\"/g" /etc/XrayR/config.yml
-    sed -i "s/CertFile:.*/CertFile: ${certfile}/g" /etc/XrarR/config.yml
-    sed -i "s/KeyFile:.*/KeyFile: ${keyfile}/g" /etc/XrarR/config.yml
+
+    #/etc/letsencrypt/live/www.baidu.com/fullchain.pem
+        #/etc/letsencrypt/live/www.baidu.com/privkey.pem
+        #certfile = "/etc/letsencrypt/live/${node_domain}/fullchain.pem"
+        #keyfile = "/etc/letsencrypt/live/${node_domain}/privkey.pem"
+
+    sed -i "s/CertFile:.*/CertFile: /etc/letsencrypt/live/${node_domain}/fullchain.pem/g" /etc/XrarR/config.yml
+    sed -i "s/KeyFile:.*/KeyFile: /etc/letsencrypt/live/${node_domain}/privkey.pem/g" /etc/XrarR/config.yml
     echo ""
     echo "写入完成，正在尝试重启XrayR服务..."
     echo
