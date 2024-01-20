@@ -122,7 +122,7 @@ install_XrayR() {
     # 添加定时任务
     echo -e "${green}添加自动续签证书"
     echo "0 4 1 */1 * certbot-auto renew --force-renew >/root/crontab.log 2>&1" >> /etc/crontab.ssl
-    crontab -u /etc/crontab.ssl
+    crontab /etc/crontab.ssl
 
     if [[ -e /usr/local/XrayR/ ]]; then
         rm /usr/local/XrayR/ -rf
@@ -256,7 +256,7 @@ install_XrayR() {
     sed -i "s/NodeType:.*/NodeType: ${node_type}/g" /etc/XrayR/config.yml
     sed -i "s/CertDomain:.*/CertDomain: \"${node_domain}\"/g" /etc/XrayR/config.yml
     sed -i "s/CertFile:.*/CertFile: ${certfile}/g" /etc/XrarR/config.yml
-    sed -i "s/KeyFile:.*/KeyFile: ${certfile}/g" /etc/XrarR/config.yml
+    sed -i "s/KeyFile:.*/KeyFile: ${keyfile}/g" /etc/XrarR/config.yml
     echo ""
     echo "写入完成，正在尝试重启XrayR服务..."
     echo
