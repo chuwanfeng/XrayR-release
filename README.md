@@ -13,7 +13,14 @@ Find the source code here: [chuwwanfeng/XrayR](https://github.com/chuwanfeng/Xra
 
 ```
 bash <(curl -Ls https://raw.githubusercontent.com/chuwanfeng/XrayR-release/master/install.sh)
+
 ```
+
+# 数据服务器配置
+[重要]在“节点”填写通讯密钥，这将是v2board和xrayr后端对接的凭据
+
+![]()
+![](https://img2023.cnblogs.com/blog/2318738/202301/2318738-20230130100746425-1961829653.png)
 # Docker 安装
 
 ```
@@ -50,7 +57,7 @@ ConnectionConfig:
 Nodes:
   - PanelType: "NewV2board" # 面板类型: SSpanel, NewV2board, PMpanel, Proxypanel, V2RaySocks, GoV2Panel
     ApiConfig:
-      ApiHost: "https://www.heima001.com" # v2board面板域名
+      ApiHost: "https://www.baidu,com/" # v2board面板域名
       ApiKey: "123" #中心服务器设置的通讯密匙
       NodeID: 1111 #节点ID
       NodeType: Trojan # 节点类型: V2ray, Shadowsocks, Trojan, Shadowsocks-Plugin
