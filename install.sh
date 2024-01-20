@@ -244,7 +244,8 @@ install_XrayR() {
     echo "正在尝试写入配置文件..."
     wget https://raw.githubusercontent.com/chuwanfeng/XrayR-release/master/config/config.yml -O /etc/XrayR/config.yml
     sed -i "s/PanelType:.*/PanelType: \"${panel_type}\"/g" /etc/XrayR/config.yml
-    sed -i "s/ApiHost:.*/ApiHost: \"${api_host}\"/g" /etc/XrayR/config.yml
+    #sed -i "s/ApiHost:.*/ApiHost: \"${api_host}\"/g" /etc/XrayR/config.yml
+    sed -i "s#ApiHost:.*#ApiHost: \"${api_host}\"#g" /etc/XrayR/config.yml
     sed -i "s/ApiKey:.*/ApiKey: \"${api_key}\"/g" /etc/XrayR/config.yml
 
     sed -i "s/NodeID:.*/NodeID: ${node_id}/g" /etc/XrayR/config.yml
@@ -256,8 +257,9 @@ install_XrayR() {
         #certfile = "/etc/letsencrypt/live/${node_domain}/fullchain.pem"
         #keyfile = "/etc/letsencrypt/live/${node_domain}/privkey.pem"
 
-    sed -i "s/CertFile:.*/CertFile: /etc/letsencrypt/live/${node_domain}/fullchain.pem/g" /etc/XrarR/config.yml
-    sed -i "s/KeyFile:.*/KeyFile: /etc/letsencrypt/live/${node_domain}/privkey.pem/g" /etc/XrarR/config.yml
+    sed -i "s/CertFile:.*/CertFile: \/etc\/letsencrypt\/live\/${node_domain}\/fullchain.pem/g" /etc/XrarR/config.yml
+    sed -i "s/KeyFile:.*/KeyFile: \/etc\/letsencrypt\/live\/${node_domain}\/privkey.pem/g" /etc/XrarR/config.yml
+
     echo ""
     echo "写入完成，正在尝试重启XrayR服务..."
     echo
