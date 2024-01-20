@@ -112,7 +112,7 @@ install_XrayR() {
     echo -e "${yellow}您设定的节点域名为${plain} ${node_domain}"
 
     echo -e "${green}签发ssl证书"
-    sudo certbot certonly --standalone -d $node_domain
+    certbot certonly --standalone -d $node_domain
 
     #/etc/letsencrypt/live/www.baidu.com/fullchain.pem
     #/etc/letsencrypt/live/www.baidu.com/privkey.pem
@@ -120,7 +120,7 @@ install_XrayR() {
     keyfile = "/etc/letsencrypt/live/${node_domain}/privkey.pem"
 
     # 添加定时任务
-    echo "\033[36m添加自动续签证书： \033[0m"
+    echo -e "${green}添加自动续签证书"
     echo "0 4 1 */1 * certbot-auto renew --force-renew >/root/crontab.log 2>&1" >> /etc/crontab.ssl
     crontab -u /etc/crontab.ssl
 
