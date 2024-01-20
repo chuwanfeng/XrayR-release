@@ -236,12 +236,12 @@ install_XrayR() {
     echo -e "${yellow}您选择的协议为${plain} ${node_type}"
 
     # 输入域名（TLS）
-    read -p "请输入你的域名(node.v2board.com)如没开启TLS请直接回车:" node_domain
-    [ -z "${node_domain}" ]
+ #   read -p "请输入你的域名(node.v2board.com)如没开启TLS请直接回车:" node_domain
+ #   [ -z "${node_domain}" ]
     # 如果不输入默认为node1.v2board.com
-    if [ ! $node_domain ]; then
-    node_domain="node.v2board.com"
-    fi
+ #   if [ ! $node_domain ]; then
+  #  node_domain="node.v2board.com"
+  #  fi
     echo -e "${yellow}您的域名(TLS)${plain} ${node_domain}"
 
 
