@@ -18,7 +18,7 @@ Nodes:
       ApiHost: "https://www.heima001.com" # v2board面板域名
       ApiKey: "123" #中心服务器设置的通讯密匙
       NodeID: 1111 #节点ID
-      NodeType: Trojan123 # 节点类型: V2ray, Shadowsocks, Trojan, Shadowsocks-Plugin
+      NodeType: Trojan # 节点类型: V2ray, Shadowsocks, Trojan, Shadowsocks-Plugin
       Timeout: 30 # 联连中心服务器超时
       EnableVless: false # 是否启用 Vless(对于V2ray 节点类型)
       SpeedLimit: 0 # Mbps, 本地设置将取代远程设置，0表示禁用
