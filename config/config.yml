@@ -67,7 +67,7 @@ Nodes:
         ShortIds: # 可不填
           - ""
       CertConfig:
-        CertMode: none # 关于如何获得证书的选项: none, file, http, tls, dns. 选择 "none" 将强制禁用 tls 配置.
+        CertMode: file # 关于如何获得证书的选项: none, file, http, tls, dns. 选择 "none" 将强制禁用 tls 配置.
         CertDomain: "node1.test.com" # Domain to cert
         CertFile: /etc/XrayR/cert/node1.test.com.cert # Provided if the CertMode is file
         KeyFile: /etc/XrayR/cert/node1.test.com.key

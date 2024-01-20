@@ -96,23 +96,34 @@ check_status() {
     fi
 }
 
-install_acme() {
-    #apt -y install nginx python3-certbot-nginx
-
-    # 设置面板类型
-    read -p "请输入节点服务器的域名:" node_domain
-    [ -z "${node_domain}" ]
-    # 如果不输入默认为NewV2board
-    if [ ! $node_domain ]; then
-      node_domain="www.heima002.com"
-    fi
-    echo -e "${yellow}您设定的节点域名为${plain} ${node_domain}"
-
-    #certbot certonly -d $node_domain --manual --preferred-challenges dns
-    #certbot certonly --standalone -d vip.chuwanfeng.top
+install_cerboat() {
+    apt -y install python3-certbot-nginx
 }
 
 install_XrayR() {
+    #签发ssl证书
+    # 设置节点域名
+    read -p "请输入节点服务器的域名:" node_domain
+    [ -z "${node_domain}" ]
+    # 如果不输入默认为www.hema002.com
+    if [ ! $node_domain ]; then
+        node_domain="www.heima002.com"
+    fi
+    echo -e "${yellow}您设定的节点域名为${plain} ${node_domain}"
+
+    echo -e "$[green]签发ssl证书"
+    sudo certbot certonly --standalone -d $node_domain
+
+    #/etc/letsencrypt/live/www.baidu.com/fullchain.pem
+    #/etc/letsencrypt/live/www.baidu.com/privkey.pem
+    certfile = "/etc/letsencrypt/live/${node_domain}/fullchain.pem"
+    keyfile = "/etc/letsencrypt/live/${node_domain}/privkey.pem"
+
+    # 添加定时任务
+    echo "\033[36m添加自动续签证书： \033[0m"
+    echo "0 4 1 */1 * certbot-auto renew --force-renew >/root/crontab.log 2>&1" >> /etc/crontab.ssl
+    crontab -u /etc/crontab.ssl
+
     if [[ -e /usr/local/XrayR/ ]]; then
         rm /usr/local/XrayR/ -rf
     fi
@@ -244,6 +255,8 @@ install_XrayR() {
     sed -i "s/NodeID:.*/NodeID: ${node_id}/g" /etc/XrayR/config.yml
     sed -i "s/NodeType:.*/NodeType: ${node_type}/g" /etc/XrayR/config.yml
     sed -i "s/CertDomain:.*/CertDomain: \"${node_domain}\"/g" /etc/XrayR/config.yml
+    sed -i "s/CertFile:.*/CertFile: ${certfile}/g" /etc/XrarR/config.yml
+    sed -i "s/KeyFile:.*/KeyFile: ${certfile}/g" /etc/XrarR/config.yml
     echo ""
     echo "写入完成，正在尝试重启XrayR服务..."
     echo
@@ -256,9 +269,9 @@ install_XrayR() {
 
     systemctl daemon-reload
     XrayR restart
-    echo "正在配置防火墙！放行443、1443端口"
+    echo "正在配置防火墙！放行443、80端口"
     echo
-    ufw allow 1443/tcp
+    ufw allow 80/tcp
     ufw allow 443/tcp
     ufw status
     #systemctl disable firewalld
