@@ -17,10 +17,12 @@ bash <(curl -Ls https://raw.githubusercontent.com/chuwanfeng/XrayR-release/maste
 ```
 
 # 数据服务器配置
-[重要]在“节点”填写通讯密钥，这将是v2board和xrayr后端对接的凭据
+1.[重要]在“节点”填写通讯密钥，这将是v2board和xrayr后端对接的凭据
 
-![]()
 ![](https://img2023.cnblogs.com/blog/2318738/202301/2318738-20230130100746425-1961829653.png)
+
+2.再新建节点
+![](https://img2023.cnblogs.com/blog/2318738/202301/2318738-20230130100654830-623083712.png)
 # Docker 安装
 
 ```
