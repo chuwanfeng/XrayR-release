@@ -22,7 +22,8 @@ bash <(curl -Ls https://raw.githubusercontent.com/chuwanfeng/XrayR-release/maste
 ![](https://img2023.cnblogs.com/blog/2318738/202301/2318738-20230130100746425-1961829653.png)
 
 2.再新建节点
-![](https://img2023.cnblogs.com/blog/2318738/202301/2318738-20230130100654830-623083712.png)
+![Trojan](https://img2023.cnblogs.com/blog/2318738/202301/2318738-20230130100654830-623083712.png)
+
 # Docker 安装
 
 ```
