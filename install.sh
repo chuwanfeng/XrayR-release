@@ -274,6 +274,7 @@ install_XrayR() {
     XrayR restart
     echo "正在配置防火墙！放行443、80端口"
     echo
+    apt install ufw
     ufw allow 80/tcp
     ufw allow 443/tcp
     ufw status
@@ -302,6 +303,17 @@ install_XrayR() {
     echo "XrayR uninstall          - 卸载 XrayR"
     echo "XrayR version            - 查看 XrayR 版本"
     echo "------------------------------------------"
+}
+
+install_nginx(){
+     sudo apt install build-essential libpcre3 libpcre3-dev zlib1g zlib1g-dev openssl libssl-dev
+
+     wget http://nginx.org/download/nginx-1.22.1.tar.gz && tar -xf nginx-1.22.1.tar.gz
+     cd nginx-1.22.1
+
+
+      make && make install
+
 }
 
 echo -e "${green}开始安装${plain}"
