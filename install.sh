@@ -277,6 +277,7 @@ install_XrayR() {
     apt install ufw
     ufw allow 80/tcp
     ufw allow 443/tcp
+    ufw allow 22/tcp
     ufw status
     #systemctl disable firewalld
     #systemctl stop firewalld
