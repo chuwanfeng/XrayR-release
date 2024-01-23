@@ -112,6 +112,7 @@ install_XrayR() {
     echo -e "${yellow}您设定的节点域名为${plain} ${node_domain}"
 
     echo -e "${green}签发ssl证书"
+    nginx -s stop
     certbot certonly --standalone -d $node_domain
 
     # 添加定时任务
