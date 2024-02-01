@@ -67,15 +67,15 @@ Nodes:
         ShortIds: # 可不填
           - ""
       CertConfig:
-        CertMode: file # 关于如何获得证书的选项: none, file, http, tls, dns. 选择 "none" 将强制禁用 tls 配置.
-        CertDomain: "node1.test.com" # Domain to cert
-        CertFile: /etc/XrayR/cert/node1.test.com.cert # Provided if the CertMode is file
-        KeyFile: /etc/XrayR/cert/node1.test.com.key
-        Provider: alidns # DNS cert provider, Get the full support list here: https://go-acme.github.io/lego/dns/
-        Email: test@me.com
+        CertMode: dns
+        CertDomain: "001.heima360.cc"
+        #CertFile: /etc/letsencrypt/live/001.heima360.cc/fullchain.pem
+        #KeyFile: /etc/letsencrypt/live/001.heima360.cc/privkey.pem
+        Provider: cloudflare # DNS cert provider, Get the full support list here: https://go-acme.github.io/lego/dns/
+        Email: lhuatrading3@gmail.com
         DNSEnv: # DNS ENV option used by DNS provider
-          ALICLOUD_ACCESS_KEY: aaa
-          ALICLOUD_SECRET_KEY: bbb
+          CLOUDFLARE_EMAIL: lhuatrading3@gmail.com
+          CLOUDFLARE_API_KEY: 2430c8414bf909370247902ef0f45d73a538a
 
 #  - PanelType: "SSpanel" # Panel type: SSpanel, V2board, NewV2board, PMpanel, Proxypanel, V2RaySocks, GoV2Panel
 #    ApiConfig:

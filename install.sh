@@ -111,14 +111,14 @@ install_XrayR() {
     fi
     echo -e "${yellow}您设定的节点域名为${plain} ${node_domain}"
 
-    echo -e "${green}签发ssl证书"
-    nginx -s stop
-    certbot certonly --standalone -d $node_domain
-
-    # 添加定时任务
-    echo -e "${green}添加自动续签证书"
-    echo "0 4 1 */2 * certbot renew --force-renew >/root/crontab.log 2>&1" >> /etc/crontab.ssl
-    crontab /etc/crontab.ssl
+#    echo -e "${green}签发ssl证书"
+#    nginx -s stop
+#    certbot certonly --standalone -d $node_domain
+#
+#    # 添加定时任务
+#    echo -e "${green}添加自动续签证书"
+#    echo "0 4 1 */2 * certbot renew --force-renew >/root/crontab.log 2>&1" >> /etc/crontab.ssl
+#    crontab /etc/crontab.ssl
 
     if [[ -e /usr/local/XrayR/ ]]; then
         rm /usr/local/XrayR/ -rf
