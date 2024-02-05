@@ -275,10 +275,10 @@ install_XrayR() {
     read -p "请输入端口:" node_port
     [ -z "${node_port}" ]
     # 如果不输入默认为V2ray
-    if [ ! $node_type ]; then
+    if [ ! $node_port ]; then
       node_port=15361
     fi
-    echo -e "${yellow}您选择的协议为${plain} ${node_type}"
+    echo -e "${yellow}您输入的端口为${plain} ${node_port}"
 #    ufw allow 80/tcp
 #    ufw allow 443/tcp
 #    ufw allow 22/tcp
