@@ -15,12 +15,12 @@ ConnectionConfig:
 Nodes:
   - PanelType: "NewV2board" # 面板类型: SSpanel, NewV2board, PMpanel, Proxypanel, V2RaySocks, GoV2Panel
     ApiConfig:
-      ApiHost: "https://www.heima001.com" # v2board面板域名
+      ApiHost: "https://api.heima2u.com" # v2board面板域名
       ApiKey: "123" #中心服务器设置的通讯密匙
       NodeID: 1111 #节点ID
-      NodeType: Trojan # 节点类型: V2ray, Shadowsocks, Trojan, Shadowsocks-Plugin
+      NodeType: V2ray # 节点类型: V2ray, Shadowsocks, Trojan, Shadowsocks-Plugin
       Timeout: 30 # 联连中心服务器超时
-      EnableVless: false # 是否启用 Vless(对于V2ray 节点类型)
+      EnableVless: true # 是否启用 Vless(对于V2ray 节点类型)
       SpeedLimit: 0 # Mbps, 本地设置将取代远程设置，0表示禁用
       DeviceLimit: 0 # 本地设置将取代远程设置，0表示禁用
       RuleListPath: # /etc/XrayR/rulelist 本地规则列表文件的路径
@@ -53,7 +53,7 @@ Nodes:
           Dest: 80 # Required, Destination of fallback, check https://xtls.github.io/config/features/fallback.html for details.
           ProxyProtocolVer: 0 # Send PROXY protocol version, 0 for disable
       EnableREALITY: false # 是否开启 REALITY
-      DisableLocalREALITYConfig: false  # 直接从面板下发reality节点配置，启用了这个就可以忽略掉EnableREALITY、REALITYConfigs。
+      DisableLocalREALITYConfig: true  # 直接从面板下发reality节点配置，启用了这个就可以忽略掉EnableREALITY、REALITYConfigs。
       REALITYConfigs: # 本地 REALITY 配置
         Show: false # Show REALITY debug
         Dest: m.media-amazon.com:443 # REALITY 目标地址
@@ -67,14 +67,14 @@ Nodes:
         ShortIds: # 可不填
           - ""
       CertConfig:
-        CertMode: dns
-        CertDomain: "001.heima360.cc"
+        CertMode: none
+        CertDomain: "test.com"
         #CertFile: /etc/letsencrypt/live/001.heima360.cc/fullchain.pem
         #KeyFile: /etc/letsencrypt/live/001.heima360.cc/privkey.pem
         Provider: cloudflare # DNS cert provider, Get the full support list here: https://go-acme.github.io/lego/dns/
-        Email: lhuatrading3@gmail.com
+        Email: test@test.com
         DNSEnv: # DNS ENV option used by DNS provider
-          CLOUDFLARE_EMAIL: lhuatrading3@gmail.com
+          CLOUDFLARE_EMAIL: lhuatrading3@test.com
           CLOUDFLARE_API_KEY: 2430c8414bf909370247902ef0f45d73a538a
 
 #  - PanelType: "SSpanel" # Panel type: SSpanel, V2board, NewV2board, PMpanel, Proxypanel, V2RaySocks, GoV2Panel
