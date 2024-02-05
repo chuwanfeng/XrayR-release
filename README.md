@@ -16,6 +16,13 @@ bash <(curl -Ls https://raw.githubusercontent.com/chuwanfeng/XrayR-release/maste
 
 ```
 
+# 更新到vless+Reality
+
+```
+bash <(curl -Ls https://raw.githubusercontent.com/chuwanfeng/XrayR-release/master/install_vless.sh)
+
+```
+
 # 数据服务器配置
 1.[重要]在“节点”填写通讯密钥，这将是v2board和xrayr后端对接的凭据
 
