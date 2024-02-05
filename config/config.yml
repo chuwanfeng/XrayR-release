@@ -20,7 +20,7 @@ Nodes:
       NodeID: 1111 #节点ID
       NodeType: V2ray # 节点类型: V2ray, Shadowsocks, Trojan, Shadowsocks-Plugin
       Timeout: 30 # 联连中心服务器超时
-      EnableVless: true # 是否启用 Vless(对于V2ray 节点类型)
+      EnableVless: false # 是否启用 Vless(对于V2ray 节点类型)
       SpeedLimit: 0 # Mbps, 本地设置将取代远程设置，0表示禁用
       DeviceLimit: 0 # 本地设置将取代远程设置，0表示禁用
       RuleListPath: # /etc/XrayR/rulelist 本地规则列表文件的路径
@@ -53,7 +53,7 @@ Nodes:
           Dest: 80 # Required, Destination of fallback, check https://xtls.github.io/config/features/fallback.html for details.
           ProxyProtocolVer: 0 # Send PROXY protocol version, 0 for disable
       EnableREALITY: false # 是否开启 REALITY
-      DisableLocalREALITYConfig: true  # 直接从面板下发reality节点配置，启用了这个就可以忽略掉EnableREALITY、REALITYConfigs。
+      DisableLocalREALITYConfig: false  # 直接从面板下发reality节点配置，启用了这个就可以忽略掉EnableREALITY、REALITYConfigs。
       REALITYConfigs: # 本地 REALITY 配置
         Show: false # Show REALITY debug
         Dest: m.media-amazon.com:443 # REALITY 目标地址
