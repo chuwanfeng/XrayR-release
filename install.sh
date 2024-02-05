@@ -10,76 +10,13 @@ cur_dir=$(pwd)
 # check root
 [[ $EUID -ne 0 ]] && echo -e "${red}错误：${plain} 必须使用root用户运行此脚本！\n" && exit 1
 
-# check os
-if [[ -f /etc/redhat-release ]]; then
-    release="centos"
-elif cat /etc/issue | grep -Eqi "debian"; then
-    release="debian"
-elif cat /etc/issue | grep -Eqi "ubuntu"; then
-    release="ubuntu"
-elif cat /etc/issue | grep -Eqi "centos|red hat|redhat"; then
-    release="centos"
-elif cat /proc/version | grep -Eqi "debian"; then
-    release="debian"
-elif cat /proc/version | grep -Eqi "ubuntu"; then
-    release="ubuntu"
-elif cat /proc/version | grep -Eqi "centos|red hat|redhat"; then
-    release="centos"
-else
-    echo -e "${red}未检测到系统版本，请联系脚本作者！${plain}\n" && exit 1
-fi
-
-arch=$(arch)
-
-if [[ $arch == "x86_64" || $arch == "x64" || $arch == "amd64" ]]; then
-    arch="64"
-elif [[ $arch == "aarch64" || $arch == "arm64" ]]; then
-    arch="arm64-v8a"
-elif [[ $arch == "s390x" ]]; then
-    arch="s390x"
-else
-    arch="64"
-    echo -e "${red}检测架构失败，使用默认架构: ${arch}${plain}"
-fi
-
-echo "架构: ${arch}"
-
-if [ "$(getconf WORD_BIT)" != '32' ] && [ "$(getconf LONG_BIT)" != '64' ] ; then
-    echo "本软件不支持 32 位系统(x86)，请使用 64 位系统(x86_64)，如果检测有误，请联系作者"
-    exit 2
-fi
-
-os_version=""
-
-# os version
-if [[ -f /etc/os-release ]]; then
-    os_version=$(awk -F'[= ."]' '/VERSION_ID/{print $3}' /etc/os-release)
-fi
-if [[ -z "$os_version" && -f /etc/lsb-release ]]; then
-    os_version=$(awk -F'[= ."]+' '/DISTRIB_RELEASE/{print $2}' /etc/lsb-release)
-fi
-
-if [[ x"${release}" == x"centos" ]]; then
-    if [[ ${os_version} -le 6 ]]; then
-        echo -e "${red}请使用 CentOS 7 或更高版本的系统！${plain}\n" && exit 1
-    fi
-elif [[ x"${release}" == x"ubuntu" ]]; then
-    if [[ ${os_version} -lt 16 ]]; then
-        echo -e "${red}请使用 Ubuntu 16 或更高版本的系统！${plain}\n" && exit 1
-    fi
-elif [[ x"${release}" == x"debian" ]]; then
-    if [[ ${os_version} -lt 8 ]]; then
-        echo -e "${red}请使用 Debian 8 或更高版本的系统！${plain}\n" && exit 1
-    fi
-fi
-
 install_base() {
     if [[ x"${release}" == x"centos" ]]; then
         yum install epel-release -y
         yum install wget curl unzip tar crontabs socat -y
     else
-        apt update -y
-        apt install wget curl unzip tar cron socat -y
+        apt-get update
+        apt-get -y install wget curl unzip tar cron socat -y
     fi
 }
 
@@ -101,15 +38,14 @@ install_cerboat() {
 }
 
 install_XrayR() {
-    #签发ssl证书
     # 设置节点域名
-    read -p "请输入节点服务器的域名:" node_domain
-    [ -z "${node_domain}" ]
-    # 如果不输入默认为www.hema002.com
-    if [ ! $node_domain ]; then
-        node_domain="www.heima002.com"
-    fi
-    echo -e "${yellow}您设定的节点域名为${plain} ${node_domain}"
+#    read -p "请输入节点服务器的域名:" node_domain
+#    [ -z "${node_domain}" ]
+#    # 如果不输入默认为www.hema002.com
+#    if [ ! $node_domain ]; then
+#        node_domain=""
+#    fi
+#    echo -e "${yellow}您设定的节点域名为${plain} ${node_domain}"
 
 #    echo -e "${green}签发ssl证书"
 #    nginx -s stop
@@ -167,7 +103,7 @@ install_XrayR() {
     systemctl enable XrayR
     echo -e "${green}XrayR ${last_version}${plain} 安装完成，已设置开机自启"
     cp geoip.dat /etc/XrayR/
-    cp geosite.dat /etc/XrayR/ 
+    cp geosite.dat /etc/XrayR/
 
     if [[ ! -f /etc/XrayR/config.yml ]]; then
         cp config.yml /etc/XrayR/
@@ -198,14 +134,14 @@ install_XrayR() {
         cp rulelist /etc/XrayR/
     fi
 
-     # 设置面板类型
-    read -p "请输入面板类型(SSpanel, NewV2board, PMpanel, Proxypanel, V2RaySocks, GoV2Panel):" panel_type
-    [ -z "${panel_type}" ]
-    # 如果不输入默认为NewV2board
-    if [ ! $panel_type ]; then
-      panel_type="NewV2board"
-    fi
-    echo -e "${yellow}您设定的面板类型为${plain} ${panel_type}"
+#     # 设置面板类型
+#    read -p "请输入面板类型(SSpanel, NewV2board, PMpanel, Proxypanel, V2RaySocks, GoV2Panel):" panel_type
+#    [ -z "${panel_type}" ]
+#    # 如果不输入默认为NewV2board
+#    if [ ! $panel_type ]; then
+#      panel_type="NewV2board"
+#    fi
+#    echo -e "${yellow}您设定的面板类型为${plain} ${panel_type}"
 
     # 设置面板URL地址
     read -p "请输入面板URL地址:" api_host
@@ -223,13 +159,13 @@ install_XrayR() {
     echo -e "${green}您设定的节点序号为${plain} ${node_id}"
 
     # 选择协议
-    read -p "请输入你使用的协议(V2ray, Shadowsocks, Trojan, Shadowsocks-Plugin):" node_type
-    [ -z "${node_type}" ]
-    # 如果不输入默认为V2ray
-    if [ ! $node_type ]; then
-    node_type="Trojan"
-    fi
-    echo -e "${yellow}您选择的协议为${plain} ${node_type}"
+#    read -p "请输入你使用的协议(V2ray, Shadowsocks, Trojan, Shadowsocks-Plugin):" node_type
+#    [ -z "${node_type}" ]
+#    # 如果不输入默认为V2ray
+#    if [ ! $node_type ]; then
+#    node_type="Shadowsocks"
+#    fi
+#    echo -e "${yellow}您选择的协议为${plain} ${node_type}"
 
     # 输入域名（TLS）
  #   read -p "请输入你的域名(node.v2board.com)如没开启TLS请直接回车:" node_domain
@@ -238,28 +174,23 @@ install_XrayR() {
  #   if [ ! $node_domain ]; then
   #  node_domain="node.v2board.com"
   #  fi
-    echo -e "${yellow}您的域名(TLS)${plain} ${node_domain}"
+#    echo -e "${yellow}您的域名(TLS)${plain} ${node_domain}"
 
 
     # 写入配置文件
     echo "正在尝试写入配置文件..."
     wget https://raw.githubusercontent.com/chuwanfeng/XrayR-release/master/config/config.yml -O /etc/XrayR/config.yml
-    sed -i "s/PanelType:.*/PanelType: \"${panel_type}\"/g" /etc/XrayR/config.yml
-    #sed -i "s/ApiHost:.*/ApiHost: \"${api_host}\"/g" /etc/XrayR/config.yml
+#    sed -i "s/PanelType:.*/PanelType: \"${panel_type}\"/g" /etc/XrayR/config.yml
     sed -i "s#ApiHost:.*#ApiHost: \"${api_host}\"#g" /etc/XrayR/config.yml
     sed -i "s/ApiKey:.*/ApiKey: \"${api_key}\"/g" /etc/XrayR/config.yml
 
     sed -i "s/NodeID:.*/NodeID: ${node_id}/g" /etc/XrayR/config.yml
-    sed -i "s/NodeType:.*/NodeType: ${node_type}/g" /etc/XrayR/config.yml
-    sed -i "s/CertDomain:.*/CertDomain: \"${node_domain}\"/g" /etc/XrayR/config.yml
+#    sed -i "s/NodeType:.*/NodeType: ${node_type}/g" /etc/XrayR/config.yml
+#    sed -i "s/CertDomain:.*/CertDomain: \"${node_domain}\"/g" /etc/XrayR/config.yml
 
-    #/etc/letsencrypt/live/www.baidu.com/fullchain.pem
-        #/etc/letsencrypt/live/www.baidu.com/privkey.pem
-        #certfile = "/etc/letsencrypt/live/${node_domain}/fullchain.pem"
-        #keyfile = "/etc/letsencrypt/live/${node_domain}/privkey.pem"
 
-    sed -i "s/CertFile:.*/CertFile: \/etc\/letsencrypt\/live\/${node_domain}\/fullchain.pem/g" /etc/XrayR/config.yml
-    sed -i "s/KeyFile:.*/KeyFile: \/etc\/letsencrypt\/live\/${node_domain}\/privkey.pem/g" /etc/XrayR/config.yml
+#    sed -i "s/CertFile:.*/CertFile: \/etc\/letsencrypt\/live\/${node_domain}\/fullchain.pem/g" /etc/XrayR/config.yml
+#    sed -i "s/KeyFile:.*/KeyFile: \/etc\/letsencrypt\/live\/${node_domain}\/privkey.pem/g" /etc/XrayR/config.yml
 
     echo ""
     echo "写入完成，正在尝试重启XrayR服务..."
@@ -273,12 +204,22 @@ install_XrayR() {
 
     systemctl daemon-reload
     XrayR restart
-    echo "正在配置防火墙！放行443、80端口"
+    echo "正在配置防火墙！放行协议的端口"
     echo
     apt install ufw
-    ufw allow 80/tcp
-    ufw allow 443/tcp
-    ufw allow 22/tcp
+
+
+    read -p "请输入端口:" node_port
+    [ -z "${node_port}" ]
+    # 如果不输入默认为V2ray
+    if [ ! $node_type ]; then
+      node_port=15361
+    fi
+    echo -e "${yellow}您选择的协议为${plain} ${node_type}"
+#    ufw allow 80/tcp
+#    ufw allow 443/tcp
+#    ufw allow 22/tcp
+    ufw allow ${node_port}/tcp
     ufw enable
     ufw status
     #systemctl disable firewalld
@@ -309,17 +250,21 @@ install_XrayR() {
 }
 
 install_nginx(){
-     sudo apt install build-essential libpcre3 libpcre3-dev zlib1g zlib1g-dev openssl libssl-dev
-
-     wget http://nginx.org/download/nginx-1.22.1.tar.gz && tar -xf nginx-1.22.1.tar.gz
-     cd nginx-1.22.1
-
-
-      make && make install
-
+     if ! command -v nginx &> /dev/null; then
+        echo "Nginx 未安装，正在执行安装..."
+         apt-get update
+         apt-get install -y nginx
+         echo "Nginx 安装成功。"
+     else
+       #关闭nginx
+#        sudo systemctl stop nginx
+#        sudo systemctl disable nginx
+        echo "Nginx 已经安装。"
+     fi
 }
 
 echo -e "${green}开始安装${plain}"
 install_base
-install_cerboat
+#install_cerboat
+#install_nginx
 install_XrayR $1
