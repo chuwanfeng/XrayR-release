@@ -38,7 +38,7 @@ install_XrayR() {
     echo "正在配置防火墙！放行6443、443、80端口"
     echo
 
-    ufw allow 6443/tcp
+    ufw allow 8443/tcp
 
     echo "XrayR服务已经完成重启，请愉快地享用！"
     echo
