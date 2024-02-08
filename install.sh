@@ -102,13 +102,13 @@ install_cerboat() {
 
 install_XrayR() {
     # 设置节点域名
-#    read -p "请输入节点服务器的域名:" node_domain
-#    [ -z "${node_domain}" ]
-#    # 如果不输入默认为www.hema002.com
-#    if [ ! $node_domain ]; then
-#        node_domain=""
-#    fi
-#    echo -e "${yellow}您设定的节点域名为${plain} ${node_domain}"
+    read -p "请输入节点服务器的域名:" node_domain
+    [ -z "${node_domain}" ]
+    # 如果不输入默认为www.hema002.com
+    if [ ! $node_domain ]; then
+        node_domain=""
+    fi
+    echo -e "${yellow}您设定的节点域名为${plain} ${node_domain}"
 
 #    echo -e "${green}签发ssl证书"
 #    nginx -s stop
@@ -249,7 +249,7 @@ install_XrayR() {
 
     sed -i "s/NodeID:.*/NodeID: ${node_id}/g" /etc/XrayR/config.yml
 #    sed -i "s/NodeType:.*/NodeType: ${node_type}/g" /etc/XrayR/config.yml
-#    sed -i "s/CertDomain:.*/CertDomain: \"${node_domain}\"/g" /etc/XrayR/config.yml
+    sed -i "s/CertDomain:.*/CertDomain: \"${node_domain}\"/g" /etc/XrayR/config.yml
 
 
 #    sed -i "s/CertFile:.*/CertFile: \/etc\/letsencrypt\/live\/${node_domain}\/fullchain.pem/g" /etc/XrayR/config.yml
@@ -272,17 +272,17 @@ install_XrayR() {
     apt install ufw
 
 
-    read -p "请输入端口:" node_port
-    [ -z "${node_port}" ]
-    # 如果不输入默认为V2ray
-    if [ ! $node_port ]; then
-      node_port=15361
-    fi
-    echo -e "${yellow}您输入的端口为${plain} ${node_port}"
-#    ufw allow 80/tcp
-#    ufw allow 443/tcp
-#    ufw allow 22/tcp
-    ufw allow ${node_port}/tcp
+#    read -p "请输入端口:" node_port
+#    [ -z "${node_port}" ]
+#    # 如果不输入默认为V2ray
+#    if [ ! $node_port ]; then
+#      node_port=15361
+#    fi
+#    echo -e "${yellow}您输入的端口为${plain} ${node_port}"
+    ufw allow 80/tcp
+    ufw allow 443/tcp
+    ufw allow 22/tcp
+#    ufw allow ${node_port}/tcp
     ufw enable
     ufw status
     #systemctl disable firewalld
