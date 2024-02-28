@@ -18,9 +18,9 @@ Nodes:
       ApiHost: "https://test.com" # v2board面板域名
       ApiKey: "123" #中心服务器设置的通讯密匙
       NodeID: 1111 #节点ID
-      NodeType: Trojan # 节点类型: V2ray, Shadowsocks, Trojan, Shadowsocks-Plugin
+      NodeType: V2ray # 节点类型: V2ray, Shadowsocks, Trojan, Shadowsocks-Plugin
       Timeout: 30 # 联连中心服务器超时
-      EnableVless: false # 是否启用 Vless(对于V2ray 节点类型)
+      EnableVless: true # 是否启用 Vless(对于V2ray 节点类型)
       SpeedLimit: 0 # Mbps, 本地设置将取代远程设置，0表示禁用
       DeviceLimit: 0 # 本地设置将取代远程设置，0表示禁用
       RuleListPath: # /etc/XrayR/rulelist 本地规则列表文件的路径
@@ -67,7 +67,7 @@ Nodes:
         ShortIds: # 可不填
           - ""
       CertConfig:
-        CertMode: DNS
+        CertMode: none
         CertDomain: "test.com"
         #CertFile: /etc/letsencrypt/live/001.heima360.cc/fullchain.pem
         #KeyFile: /etc/letsencrypt/live/001.heima360.cc/privkey.pem

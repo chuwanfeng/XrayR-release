@@ -329,5 +329,5 @@ install_nginx(){
 echo -e "${green}开始安装${plain}"
 install_base
 #install_cerboat
-#install_nginx
+install_nginx
 install_XrayR $1
